@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recorte de Imagens</title>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/460/fabric.min.js" integrity="sha512-ybPp3kCrNQXdvTfh99YLIdnajWnQvHuEKDJ+b26mxI9w+pLhnBo3HmNLJ1pEUBFO1Q0bfJxApeqecNbmaV763g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="/client.js"></script>
+  <link rel="stylesheet" href="/output.css" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body class="min-h-screen bg-stone-300 p-6 relative">
+  <h1 class="text-4xl text-center font-bold w-fit mx-auto tracking-wider">
+    Recorte de Imagens
+  </h1>
+  <form class="max-w-screen-lg mx-auto bg-stone-200 mt-6 p-4 flex gap-4" id="my-form">
+      <div class="basis-auto px-2 ">
+        <p class="font-medium mb-2">Nº de Cortes:</p>
+        <div class="flex items-center">
+          <span id="subtract-btn" class="bg-white rounded-full">
+            <img src="img/subtract.svg"  class="h-6 cursor-pointer"/>
+          </span>
+          <span id="sheets-counter" class="text-lg font-medium px-2">
+            0
+          </span>
+          <span id="add-btn" class="bg-white rounded-full">
+            <img src="img/add.svg" class="h-6 cursor-pointer"/>
+          </span>
+        </div>
+      </div>
+      <div class="basis-auto px-2 ">
+        <p class="font-medium col-span-2 mb-2">Orientação:</p>
+        <span class="mr-1">
+          <input type="radio" name="orientation" value="portrait" checked> Retrato
+        </span>
+        <span>
+          <input type="radio" name="orientation" value="landscape"> Paisagem
+        </span>
+      </div>
+      <div class="basis-auto px-2 ">
+        <p class="font-medium col-span-2 mb-2">Direção de Corte:</p>
+        <span class="mr-1">
+          <input type="radio" name="direction" value="vertical" checked> Vertical
+        </span>
+        <span>
+          <input type="radio" name="direction" value="horizontal"> Horizontal
+        </span>
+      </div>
+      <div class="basis-auto px-2 ml-auto">
+        <p class="font-medium col-span-2 mb-2">Salvar Como:</p>
+        <span class="mr-1">
+          <input type="radio" name="output-format" value="pdf" checked> .pdf
+        </span>
+        <span>
+          <input type="radio" name="output-format" value="zip"> .zip
+        </span>
+      </div>
+        <button id="submit-btn" class="bg-stone-50 rounded-lg block gap-2 my-auto px-6 py-3">
+          <span class="font-bold tracking-wide block">
+            Recortar
+          </span>
+        </button>
+   
+  </form>
+  <input type="file" id="image-upload" accept=".png, .jpg, .jpeg, .webp" class="hidden">
+  <div id="upload-button" class="flex gap-2 items-center mx-auto bg-stone-100 w-fit cursor-pointer px-4 py-2 rounded-lg mt-6">
+    <img src="img/upload.svg" class="h-8"/>
+    <p class="font-medium">Carregar Arquivo</p>
+  </div>
+  <div class="mx-auto w-fit mt-4 bg-white hidden" id="canvas-container">
+    <canvas id="your-canvas-id"></canvas>
+  </div>
+
+  <div class="bg-stone-200 shadow-inner text-center mt-auto absolute inset-x-0 bottom-0 p-4 font-medium m-0">
+    © 2023 Bruno Azevedo
+  </div>
+</body>
+</html>
