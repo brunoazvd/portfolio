@@ -5,7 +5,7 @@ import vhost from "vhost";
 
 import recortarImagensRoutes from "./src/projects/recortar-imagens/routes.js";
 import preencherAtividadesRoutes from "./src/projects/preencher-atividades/routes.js";
-import testeRoutes from "./src/projects/teste/routes.js";
+import portfolioRoutes from "./src/projects/portfolio/routes.js";
 
 const app = express();
 
@@ -35,7 +35,7 @@ app.use(
 app.use(
   rateLimit({
     windowMs: 1000 * 60 * 15,
-    max: 500,
+    max: 250,
   })
 );
 
@@ -47,10 +47,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// Project Routes and Subdomains
 app.use(vhost("recortar-imagens.localhost", recortarImagensRoutes));
 app.use(vhost("preencher-atividades.localhost", preencherAtividadesRoutes));
-app.use(vhost("teste.localhost", testeRoutes));
+app.use(vhost("portfolio.localhost", portfolioRoutes));
+
+// Fallback Route (Redirects to Portfolio)
+app.use((req, res) => {
+  res.redirect("http://portfolio.localhost:3000");
+})
+
 
 // Init Server
 app.listen(3000, "0.0.0.0", () => {
