@@ -7,6 +7,8 @@ import recortarImagensRoutes from "./src/projects/recortar-imagens/routes.js";
 import preencherAtividadesRoutes from "./src/projects/preencher-atividades/routes.js";
 import portfolioRoutes from "./src/projects/portfolio/routes.js";
 
+import { createProxyMiddleware } from "http-proxy-middleware";
+
 const app = express();
 
 // Helmet Config
@@ -48,17 +50,20 @@ app.use((req, res, next) => {
 });
 
 // Project Routes and Subdomains
-app.use(vhost("recortar-imagens.brunoazvd.com", recortarImagensRoutes));
-app.use(vhost("preencher-atividades.brunoazvd.com", preencherAtividadesRoutes));
-app.use(vhost("portfolio.brunoazvd.com", portfolioRoutes));
+app.use(vhost("recortar-imagens.localhost", recortarImagensRoutes));
+app.use(vhost("preencher-atividades.localhost", preencherAtividadesRoutes));
+app.use(vhost("portfolio.localhost", portfolioRoutes));
+
+// Projects being served through proxies
+app.use(vhost("rplace.localhost", createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
 
 // Fallback Route (Redirects to Portfolio)
 app.use((req, res) => {
-  res.redirect("http://portfolio.brunoazvd.com:3000");
+  res.redirect("http://portfolio.localhost");
 })
 
 
 // Init Server
-app.listen(3000, "0.0.0.0", () => {
+app.listen(80, "0.0.0.0", () => {
   console.log(`Servidor Rodando`);
 });
