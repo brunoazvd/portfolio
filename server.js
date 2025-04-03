@@ -22,12 +22,23 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "blob:"],
-      connectSrc: ["'self'", "blob:"],
+      imgSrc: ["'self'", "data:", "blob:", "https://image.tmdb.org"],
+      connectSrc: [
+        "'self'", 
+        "blob:", 
+        "https://api.themoviedb.org",
+        "https://fonts.gstatic.com"
+      ],
       scriptSrc: [
         "'self'",
         "https://cdn.tailwindcss.com",
         "https://cdnjs.cloudflare.com/ajax/libs/fabric.js/460/fabric.min.js",
+        "https://api.themoviedb.org"
+      ],
+      styleSrc: [
+        "'self'", 
+        "https://cdnjs.cloudflare.com", 
+        "https://fonts.googleapis.com"
       ],
     },
   })
@@ -50,9 +61,11 @@ app.use((req, res, next) => {
 });
 
 // Project Routes and Subdomains
+app.use(vhost("portfolio.localhost", portfolioRoutes));
 app.use(vhost("recortar-imagens.localhost", recortarImagensRoutes));
 app.use(vhost("preencher-atividades.localhost", preencherAtividadesRoutes));
-app.use(vhost("portfolio.localhost", portfolioRoutes));
+app.use(vhost("tmdb-search.localhost", express.static("./src/projects/movie-search")));
+
 
 // Projects being served through proxies
 app.use(vhost("rplace.localhost", createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
