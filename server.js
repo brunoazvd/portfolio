@@ -27,7 +27,8 @@ app.use(
         "'self'", 
         "blob:", 
         "https://api.themoviedb.org",
-        "https://fonts.gstatic.com"
+        "https://fonts.gstatic.com",
+        "http://localhost:3003",
       ],
       scriptSrc: [
         "'self'",
@@ -38,7 +39,8 @@ app.use(
       styleSrc: [
         "'self'", 
         "https://cdnjs.cloudflare.com", 
-        "https://fonts.googleapis.com"
+        "https://fonts.googleapis.com",
+        "'unsafe-inline'",
       ],
     },
   })
@@ -66,9 +68,9 @@ app.use(vhost("recortar-imagens.localhost", recortarImagensRoutes));
 app.use(vhost("preencher-atividades.localhost", preencherAtividadesRoutes));
 app.use(vhost("tmdb-search.localhost", express.static("./src/projects/movie-search")));
 
-
 // Projects being served through proxies
 app.use(vhost("rplace.localhost", createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
+app.use(vhost("sistema-escolar.localhost", createProxyMiddleware({target: "http://localhost:3003", changeOrigin: true})));
 
 // Fallback Route (Redirects to Portfolio)
 app.use((req, res) => {
