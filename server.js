@@ -2,13 +2,21 @@ import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import vhost from "vhost";
-
+import fs from "fs";
+import http from "http";
+import https from "https";
 import recortarImagensRoutes from "./src/projects/recortar-imagens/routes.js";
 import preencherAtividadesRoutes from "./src/projects/preencher-atividades/routes.js";
-
 import { createProxyMiddleware } from "http-proxy-middleware";
 
 const app = express();
+
+// SSL
+const sslOptions = {
+  key: fs.readFileSync('/etc/letsencrypt/live/brunoazvd.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/brunoazvd.com/fullchain.pem'),
+};
+
 
 // Helmet Config
 app.use(
@@ -49,7 +57,7 @@ app.use(
 app.use(
   rateLimit({
     windowMs: 1000 * 60 * 15,
-    max: 250,
+    max: 800,
   })
 );
 
@@ -62,22 +70,29 @@ app.use((req, res, next) => {
 });
 
 // Project Routes and Subdomains
-app.use(vhost("portfolio.localhost", express.static("./src/projects/portfolio")));
-app.use(vhost("recortar-imagens.localhost", recortarImagensRoutes));
-app.use(vhost("preencher-atividades.localhost", preencherAtividadesRoutes));
-app.use(vhost("tmdb-search.localhost", express.static("./src/projects/movie-search")));
+app.use(vhost("portfolio.brunoazvd.com", express.static("./src/projects/portfolio")));
+app.use(vhost("recortar-imagens.brunoazvd.com", recortarImagensRoutes));
+app.use(vhost("preencher-atividades.brunoazvd.com", preencherAtividadesRoutes));
+app.use(vhost("tmdb-search.brunoazvd.com", express.static("./src/projects/movie-search")));
 
 // Projects being served through proxies
-app.use(vhost("rplace.localhost", createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
-app.use(vhost("sistema-escolar.localhost", createProxyMiddleware({target: "http://localhost:3003", changeOrigin: true})));
+app.use(vhost("rplace.brunoazvd.com", createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
+app.use(vhost("sistema-escolar.brunoazvd.com", createProxyMiddleware({target: "http://localhost:3003", changeOrigin: true})));
 
 // Fallback Route (Redirects to Portfolio)
 app.use((req, res) => {
-  res.redirect("http://portfolio.localhost");
+  res.redirect("https://portfolio.brunoazvd.com");
 })
 
 
-// Init Server
-app.listen(80, "0.0.0.0", () => {
-  console.log(`Servidor Rodando`);
+// Init HTTPS server + HTTP Redirect
+https.createServer(sslOptions, app).listen(443, () => {
+  console.log('HTTPS ativo na porta 443');
+});
+
+http.createServer((req, res) => {
+  res.writeHead(301, { Location: `https://${req.headers.host}${req.url}` });
+  res.end();
+}).listen(80, () => {
+  console.log('Redirecionando HTTP → HTTPS...');
 });
