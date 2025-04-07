@@ -5,7 +5,6 @@ import vhost from "vhost";
 
 import recortarImagensRoutes from "./src/projects/recortar-imagens/routes.js";
 import preencherAtividadesRoutes from "./src/projects/preencher-atividades/routes.js";
-import portfolioRoutes from "./src/projects/portfolio/routes.js";
 
 import { createProxyMiddleware } from "http-proxy-middleware";
 
@@ -63,7 +62,7 @@ app.use((req, res, next) => {
 });
 
 // Project Routes and Subdomains
-app.use(vhost("portfolio.localhost", portfolioRoutes));
+app.use(vhost("portfolio.localhost", express.static("./src/projects/portfolio")));
 app.use(vhost("recortar-imagens.localhost", recortarImagensRoutes));
 app.use(vhost("preencher-atividades.localhost", preencherAtividadesRoutes));
 app.use(vhost("tmdb-search.localhost", express.static("./src/projects/movie-search")));
