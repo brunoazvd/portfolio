@@ -85,7 +85,7 @@ app.use(vhost("sistema-escolar.brunoazvd.com", createProxyMiddleware({target: "h
 
 // Fallback Route (Redirects to Portfolio)
 app.use((req, res) => {
-  res.redirect("https://portfolio.brunoazvd.com");
+  res.redirect("https://portfolio.brunoazvd.com/404");
 })
 
 
