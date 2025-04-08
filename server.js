@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -36,7 +37,10 @@ app.use(
         "https://api.themoviedb.org",
         "https://fonts.gstatic.com",
         "http://localhost:3003",
-      ],
+	"https://sistema-escolar.brunoazvd.com",
+	"http://69.62.99.162:3003",
+	"https://69.62.99.162:3003"
+     ],
       scriptSrc: [
         "'self'",
         "https://cdn.tailwindcss.com",
@@ -70,10 +74,10 @@ app.use((req, res, next) => {
 });
 
 // Project Routes and Subdomains
-app.use(vhost("portfolio.brunoazvd.com", express.static("./src/projects/portfolio")));
+app.use(vhost("portfolio.brunoazvd.com", express.static(path.join(__dirname, "./src/projects/portfolio"))));
 app.use(vhost("recortar-imagens.brunoazvd.com", recortarImagensRoutes));
 app.use(vhost("preencher-atividades.brunoazvd.com", preencherAtividadesRoutes));
-app.use(vhost("tmdb-search.brunoazvd.com", express.static("./src/projects/movie-search")));
+app.use(vhost("tmdb-search.brunoazvd.com", express.static(path.join(__dirname, "./src/projects/movie-search"))));
 
 // Projects being served through proxies
 app.use(vhost("rplace.brunoazvd.com", createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
@@ -90,9 +94,3 @@ https.createServer(sslOptions, app).listen(443, () => {
   console.log('HTTPS ativo na porta 443');
 });
 
-http.createServer((req, res) => {
-  res.writeHead(301, { Location: `https://${req.headers.host}${req.url}` });
-  res.end();
-}).listen(80, () => {
-  console.log('Redirecionando HTTP → HTTPS...');
-});
