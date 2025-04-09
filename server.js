@@ -4,18 +4,20 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import vhost from "vhost";
 import fs from "fs";
-import http from "http";
 import https from "https";
 import recortarImagensRoutes from "./src/projects/recortar-imagens/routes.js";
 import preencherAtividadesRoutes from "./src/projects/preencher-atividades/routes.js";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
 // SSL
 const sslOptions = {
-  key: fs.readFileSync('/etc/letsencrypt/live/brunoazvd.com/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/brunoazvd.com/fullchain.pem'),
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH),
 };
 
 
@@ -37,9 +39,9 @@ app.use(
         "https://api.themoviedb.org",
         "https://fonts.gstatic.com",
         "http://localhost:3003",
-	"https://sistema-escolar.brunoazvd.com",
-	"http://69.62.99.162:3003",
-	"https://69.62.99.162:3003"
+        "https://sistema-escolar.brunoazvd.com",
+        `http://${process.env.VPS_ADDRESS}:3003`,
+        `https://${process.env.VPS_ADDRESS}:3003`
      ],
       scriptSrc: [
         "'self'",
@@ -85,7 +87,7 @@ app.use(vhost("sistema-escolar.brunoazvd.com", createProxyMiddleware({target: "h
 
 // Fallback Route (Redirects to Portfolio)
 app.use((req, res) => {
-  res.redirect("https://portfolio.brunoazvd.com/404");
+  res.redirect("https://portfolio.brunoazvd.com/");
 })
 
 
