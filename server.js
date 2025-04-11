@@ -7,6 +7,7 @@ import fs from "fs";
 import https from "https";
 import recortarImagensRoutes from "./src/projects/recortar-imagens/routes.js";
 import preencherAtividadesRoutes from "./src/projects/preencher-atividades/routes.js";
+import produtividadeRoutes from "./src/projects/produtividade/produtividadeRoutes.js";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
@@ -81,18 +82,21 @@ app.use((req, res, next) => {
 });
 
 // Project Routes and Subdomains
-app.use(vhost("portfolio.brunoazvd.com", express.static(path.join(__dirname, "./src/projects/portfolio"))));
-app.use(vhost("recortar-imagens.brunoazvd.com", recortarImagensRoutes));
-app.use(vhost("preencher-atividades.brunoazvd.com", preencherAtividadesRoutes));
-app.use(vhost("tmdb-search.brunoazvd.com", express.static(path.join(__dirname, "./src/projects/movie-search"))));
+app.use(vhost(process.env.PORTFOLIO_ROUTE, express.static(path.join(__dirname, "./src/projects/portfolio"))));
+app.use(vhost(process.env.RECORTAR_IMAGENS_ROUTE, recortarImagensRoutes));
+app.use(vhost(process.env.PREENCHER_ATIVIDADES_ROUTE, preencherAtividadesRoutes));
+app.use(vhost(process.env.TMDB_SEARCH_ROUTE, express.static(path.join(__dirname, "./src/projects/movie-search"))));
+app.use(vhost(process.env.PRODUTIVIDADE_ROUTE, produtividadeRoutes));
 
 // Projects being served through proxies
-app.use(vhost("rplace.brunoazvd.com", createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
-app.use(vhost("sistema-escolar.brunoazvd.com", createProxyMiddleware({target: "http://localhost:3003", changeOrigin: true})));
+app.use(vhost(process.env.RPLACE_ROUTE, createProxyMiddleware({target: "http://localhost:3000", changeOrigin: true})));
+app.use(vhost(process.env.SISTEMA_ESCOLAR_ROUTE, createProxyMiddleware({target: "http://localhost:3003", changeOrigin: true})));
+
+
 
 // Fallback Route (Redirects to Portfolio)
 app.use((req, res) => {
-  res.redirect("https://portfolio.brunoazvd.com/");
+  res.redirect(process.env.REDIRECT_ROUTE);
 })
 
 
