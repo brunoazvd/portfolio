@@ -11,7 +11,7 @@ import produtividadeRoutes from "./src/projects/produtividade/produtividadeRoute
 import { createProxyMiddleware } from "http-proxy-middleware";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
-
+import geoip from 'geoip-lite';
 
 dotenv.config();
 
@@ -75,11 +75,31 @@ app.use(
 
 // Ip Logging
 app.use((req, res, next) => {
-  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-  const route = req.originalUrl;
-  console.log(`Request received from IP: ${ip}, Route: ${route}`);
+  const start = Date.now();
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const geo = geoip.lookup(ip);
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const log = {
+      ip: `${ip}`.startsWith("::ffff:") ? `${ip}`.replace("::ffff:", "") : ip,
+      location: `${geo.city}, ${geo.region}/${geo.country}`,
+      method: req.method,
+      path: req.originalUrl,
+      status: res.statusCode,
+//      userAgent: req.headers['user-agent'],
+      referer: req.headers['referer'] || null,
+      time: new Date().toISOString().replace('T', ' ').split('.')[0],
+//      duration
+    };
+
+    // Salvar em arquivo, banco ou serviço
+    console.log(JSON.stringify(log));
+  });
+
   next();
 });
+
 
 // Project Routes and Subdomains
 app.use(vhost(process.env.PORTFOLIO_ROUTE, express.static(path.join(__dirname, "./src/projects/portfolio"))));

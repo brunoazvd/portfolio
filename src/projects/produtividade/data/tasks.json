@@ -1,1 +1,140 @@
-[]
+[
+  {
+    "id": "1744421411447",
+    "name": "Lazer",
+    "day": "Diário",
+    "completed": true
+  },
+  {
+    "id": "1744421425444",
+    "name": "Creatina",
+    "day": "Diário",
+    "completed": true
+  },
+  {
+    "id": "1744421428949",
+    "name": "Whey",
+    "day": "Diário",
+    "completed": false
+  },
+  {
+    "id": "1744421435910",
+    "name": "Magnésio",
+    "day": "Diário",
+    "completed": false
+  },
+  {
+    "id": "1744421468744",
+    "name": "Limpeza: Banheiro, Sala, Quarto",
+    "day": "Segunda",
+    "completed": false
+  },
+  {
+    "id": "1744421490331",
+    "name": "Academia",
+    "day": "Segunda",
+    "completed": false
+  },
+  {
+    "id": "1744421522103",
+    "name": "Desenvolvimento Profissional",
+    "day": "Segunda",
+    "completed": false
+  },
+  {
+    "id": "1744421529499",
+    "name": "Escrever no diário",
+    "day": "Segunda",
+    "completed": false
+  },
+  {
+    "id": "1744421547686",
+    "name": "Academia",
+    "day": "Terça",
+    "completed": false
+  },
+  {
+    "id": "1744421553962",
+    "name": "Desenvolvimento Profissional",
+    "day": "Terça",
+    "completed": false
+  },
+  {
+    "id": "1744421566006",
+    "name": "Academia",
+    "day": "Quarta",
+    "completed": false
+  },
+  {
+    "id": "1744421575886",
+    "name": "Desenvolvimento Profissional",
+    "day": "Quarta",
+    "completed": false
+  },
+  {
+    "id": "1744421582047",
+    "name": "Escrever no diário",
+    "day": "Quarta",
+    "completed": false
+  },
+  {
+    "id": "1744421597138",
+    "name": "Academia",
+    "day": "Quinta",
+    "completed": false
+  },
+  {
+    "id": "1744421605483",
+    "name": "Desenvolvimento Profissional",
+    "day": "Quinta",
+    "completed": false
+  },
+  {
+    "id": "1744421613674",
+    "name": "Limpeza: Banheiro, Sala, Quarto",
+    "day": "Quinta",
+    "completed": false
+  },
+  {
+    "id": "1744421666310",
+    "name": "Academia",
+    "day": "Sexta",
+    "completed": true
+  },
+  {
+    "id": "1744421675315",
+    "name": "Desenvolvimento Profissional",
+    "day": "Sexta",
+    "completed": true
+  },
+  {
+    "id": "1744421686626",
+    "name": "Academia",
+    "day": "Sábado",
+    "completed": false
+  },
+  {
+    "id": "1744421696898",
+    "name": "Desenvolvimento Profissional",
+    "day": "Sábado",
+    "completed": true
+  },
+  {
+    "id": "1744421703970",
+    "name": "Escrever no diário",
+    "day": "Sábado",
+    "completed": true
+  },
+  {
+    "id": "1744421733882",
+    "name": "Organização geral da casa",
+    "day": "Domingo",
+    "completed": false
+  },
+  {
+    "id": "1744421746428",
+    "name": "Limpeza: Varanda e cozinha",
+    "day": "Domingo",
+    "completed": false
+  }
+]

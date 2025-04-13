@@ -67,10 +67,10 @@ produtividadeRoutes.delete('/api/delete-task/:id', async (req, res) => {
   }
 });
 
-produtividadesRoutes.put("/api/update-task/:id", async (req, res) => {
+produtividadeRoutes.put("/api/update-task", async (req, res) => {
   try {
     const tasks = await readTasks();
-    const taskIndex = tasks.findIndex(task => task.id === req.params.id);
+    const taskIndex = tasks.findIndex(task => task.id === req.body.id);
     if (taskIndex === -1) {
       return res.status(404).json({ error: "Task not found" });
     }
